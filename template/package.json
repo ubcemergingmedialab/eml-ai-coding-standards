@@ -1,0 +1,15 @@
+{
+  "name": "eml-project-codename",
+  "version": "0.1.0",
+  "private": true,
+  "description": "EML project — replace codename in package.json and README",
+  "scripts": {
+    "dev": "echo \"Add your dev server (e.g. next dev, vite)\" && exit 1",
+    "build": "echo \"Add your build command\" && exit 1",
+    "lint": "echo \"Add ESLint — see eml-ai-coding-standards Phase 1\" && exit 1",
+    "test": "echo \"Add tests — see eml-ai-coding-standards Phase 1\" && exit 1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

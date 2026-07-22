@@ -1,0 +1,14 @@
+---
+description: Prefer structured code search over raw file reads
+alwaysApply: true
+---
+
+Before reading entire files or searching with generic grep:
+
+1. Use codetree MCP tools (`find_symbol`, `get_references`, `run_query`, etc.).
+2. Read only the line ranges returned by structured search.
+3. Use full-file reads only for files under 100 lines or when editing the whole module.
+
+Do not paste large generated assets, lockfiles, or build output into chat.
+
+Excluded paths are listed in `.cursorignore` — do not attempt to read them.

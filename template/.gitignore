@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE (commit .cursor/ — it is lab standard; ignore personal IDE state)
+.idea/
+*.swp
+*.swo
+
+# Test / coverage
+coverage/
+
+# Tool caches
+.codetree/
+.turbo/
+.vercel/
+
+# Large binaries (> 1 MB) — use CDN or Git LFS instead
+*.mp4
+*.glb
+*.zip

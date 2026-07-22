@@ -1,0 +1,59 @@
+---
+description: EML project conventions and stack
+alwaysApply: true
+---
+
+# Project: CODENAME
+
+Replace `CODENAME` with this project's codename when generating from the template.
+
+## Stack
+
+- **Platform:** Web (Phase 1 — full AI-assisted workflow)
+- **Runtime:** Node.js LTS (pin version in README)
+- **Language:** TypeScript (strict)
+- **Framework:** [e.g. Next.js, Vite + React — update before first merge]
+
+## Repository layout
+
+```
+src/           Application source
+docs/          Architecture, setup, handoff (required)
+public/        Static assets (keep binaries < 1 MB)
+```
+
+## Commands
+
+| Task | Command |
+|------|---------|
+| Install | `npm install` |
+| Dev server | `npm run dev` |
+| Lint | `npm run lint` |
+| Test | `npm test` |
+| Build | `npm run build` |
+
+Update this table when scripts change.
+
+## Do not edit (agent)
+
+- `node_modules/`, `dist/`, `.next/`, `build/`
+- Lockfiles unless resolving a dependency task
+- `.env` — secrets live in env vars / 1Password; use `.env.example` for keys
+
+## Workflow
+
+- **Trello** — planning; link card on every dev task
+- **GitHub Issues** — authoritative tracker for code work
+- **Harvest** — log time daily; note issue `#` in entries
+- **PRs** — conventional commits; fill PR template including AI disclosure
+- **Pre-PR review** — run `/review-eml` locally; fix Critical/High findings; paste summary into PR
+
+## Documentation
+
+- Architecture: `docs/architecture.md`
+- Setup & secrets: `docs/setup.md`
+- Semester handoff: `docs/handoff.md`
+
+## Standards
+
+Follow [EML AI Coding Standards](https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards) (adjust org URL if needed).

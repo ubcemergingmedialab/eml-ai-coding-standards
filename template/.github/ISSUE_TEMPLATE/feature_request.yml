@@ -1,0 +1,56 @@
+name: Feature
+description: New feature or enhancement
+title: "[WEB] "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Create a matching Trello card and link it here. See [EML coding standards](https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards).
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What should this feature do?
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Checklist of done conditions
+      value: |
+        - [ ] 
+        - [ ] 
+    validations:
+      required: true
+
+  - type: input
+    id: trello
+    attributes:
+      label: Trello card URL
+      placeholder: https://trello.com/c/...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - web
+        - unity
+        - unreal
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: vr
+    attributes:
+      label: VR
+      options:
+        - label: VR-specific work
+          required: false
