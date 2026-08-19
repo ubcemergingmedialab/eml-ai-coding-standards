@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EML AI-Assisted Development Standards</title>
+  <style>
+    :root {
+      --ubc-navy: #002145;
+      --ubc-blue: #0055b7;
+      --cyan: #40b4e5;
+      --gold: #c4a35a;
+      --paper: #f4f1ea;
+      --ink: #0e1a28;
+      --muted: #5b6b7c;
+      --card: #ffffff;
+      --ok: #1a7a4c;
+      --caution: #b45309;
+      --no: #b42318;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--ubc-navy);
+      color: var(--ink);
+      font-family: "Segoe UI", "Iowan Old Style", Georgia, system-ui, sans-serif;
+    }
+
+    #deck {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .slide {
+      display: none;
+      height: 100%;
+      padding: 5.5vh 7vw 8vh;
+      flex-direction: column;
+      justify-content: center;
+      background:
+        radial-gradient(1200px 500px at 100% -10%, rgba(64, 180, 229, 0.18), transparent 55%),
+        linear-gradient(165deg, #001a36 0%, var(--ubc-navy) 45%, #00152c 100%);
+      color: var(--paper);
+    }
+
+    .slide.active { display: flex; }
+
+    .slide.light {
+      background: var(--paper);
+      color: var(--ink);
+    }
+
+    .kicker {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    .slide.light .kicker { color: var(--ubc-blue); }
+
+    h1 {
+      font-size: clamp(2.4rem, 5.4vw, 4.4rem);
+      font-weight: 650;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      max-width: 16ch;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+      font-weight: 650;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    .lede {
+      margin-top: 1.4rem;
+      font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+      max-width: 42ch;
+      line-height: 1.45;
+      color: rgba(244, 241, 234, 0.82);
+    }
+
+    .slide.light .lede { color: var(--muted); }
+
+    .meta {
+      margin-top: 2.4rem;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.95rem;
+      color: rgba(244, 241, 234, 0.55);
+    }
+
+    ul.plain {
+      list-style: none;
+      display: grid;
+      gap: 0.85rem;
+      max-width: 52rem;
+    }
+
+    ul.plain li {
+      font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+      line-height: 1.4;
+      padding-left: 1.4rem;
+      position: relative;
+    }
+
+    ul.plain li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55em;
+      width: 0.55em;
+      height: 0.55em;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .slide.light ul.plain li::before { background: var(--ubc-blue); }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 1.15rem 1.2rem 1.25rem;
+    }
+
+    .slide.light .card {
+      background: #fff;
+      border: 1px solid rgba(0, 33, 69, 0.1);
+      box-shadow: 0 8px 24px rgba(0, 33, 69, 0.06);
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .card p, .card small {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      color: rgba(244, 241, 234, 0.75);
+    }
+
+    .slide.light .card p,
+    .slide.light .card small { color: var(--muted); }
+
+    .num {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      color: var(--cyan);
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      display: block;
+      margin-bottom: 0.35rem;
+    }
+
+    .pill {
+      display: inline-block;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
+      margin-bottom: 0.55rem;
+    }
+
+    .pill.yes { background: #14532d; color: #bbf7d0; }
+    .pill.partial { background: #78350f; color: #fde68a; }
+    .pill.no { background: #7f1d1d; color: #fecaca; }
+    .pill.caution { background: #713f12; color: #fde68a; }
+
+    .phase {
+      display: flex;
+      align-items: stretch;
+      gap: 0.7rem;
+      margin-top: 0.4rem;
+    }
+
+    .phase .step {
+      flex: 1;
+      background: rgba(255,255,255,0.07);
+      border-radius: 14px;
+      padding: 1.2rem 1.1rem;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .phase .arrow {
+      align-self: center;
+      color: var(--cyan);
+      font-size: 1.6rem;
+      flex: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+    }
+
+    th, td {
+      text-align: left;
+      padding: 0.7rem 0.65rem;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      vertical-align: top;
+    }
+
+    .slide.light th, .slide.light td {
+      border-bottom: 1px solid rgba(0, 33, 69, 0.1);
+    }
+
+    th {
+      color: var(--cyan);
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .slide.light th { color: var(--ubc-blue); }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      align-items: center;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .flow span.n {
+      background: rgba(64, 180, 229, 0.15);
+      border: 1px solid rgba(64, 180, 229, 0.35);
+      padding: 0.55rem 0.75rem;
+      border-radius: 10px;
+      color: var(--paper);
+    }
+
+    .flow i { color: var(--cyan); font-style: normal; }
+
+    .footer-bar {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.4rem;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 0.78rem;
+      color: rgba(244, 241, 234, 0.55);
+      background: linear-gradient(transparent, rgba(0,0,0,0.35));
+      z-index: 10;
+    }
+
+    .progress {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .progress > i {
+      display: block;
+      height: 100%;
+      background: var(--cyan);
+      width: 0%;
+    }
+
+    .help {
+      opacity: 0.7;
+    }
+
+    code {
+      font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+      font-size: 0.9em;
+      background: rgba(64, 180, 229, 0.12);
+      padding: 0.05em 0.35em;
+      border-radius: 4px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .grid.cols-2, .grid.cols-3, .grid.cols-5, .two-col, .phase {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+      }
+      .phase .arrow { transform: rotate(90deg); }
+    }
+
+    @media print {
+      html, body, #deck { height: auto; overflow: visible; background: #fff; }
+      .slide { display: flex !important; page-break-after: always; min-height: 100vh; }
+      .footer-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="deck">
+
+    <section class="slide active">
+      <p class="kicker">UBC Emerging Media Lab</p>
+      <h1>AI-assisted development standards</h1>
+      <p class="lede">How EML students use Cursor, GitHub, Trello, and Harvest — without losing quality, context, or the next cohort.</p>
+      <p class="meta">Onboarding briefing · eml.ubc.ca</p>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Why this exists</p>
+      <h2>Students rotate twice a year. Projects do not.</h2>
+      <ul class="plain">
+        <li>We hire new students each term across web, Unity, and Unreal — sometimes VR.</li>
+        <li>AI coding is strongest on web, usable in Unity C#, and weak in Unreal Blueprints.</li>
+        <li>Without shared rules, each cohort invents process — and the next one inherits folklore.</li>
+        <li>These standards keep work reviewable, searchable, and handoff-ready.</li>
+      </ul>
+    </section>
+
+    <section class="slide light">
+      <p class="kicker">Five principles</p>
+      <h2>How we work with AI</h2>
+      <div class="grid cols-2">
+        <div class="card"><span class="num">01</span><h3>AI assists; humans own decisions</h3><p>You are accountable for architecture, merges, and shipped behavior.</p></div>
+        <div class="card"><span class="num">02</span><h3>Search before you dump files</h3><p>Use tree-sitter MCP for navigation. Read only the ranges you need.</p></div>
+        <div class="card"><span class="num">03</span><h3>Docs are a handoff artifact</h3><p>Every project must survive a semester turnover without oral tradition.</p></div>
+        <div class="card"><span class="num">04</span><h3>Platform realism</h3><p>Mandate AI where it works. Constrain it where it fails — especially Blueprints.</p></div>
+        <div class="card" style="grid-column: 1 / -1;"><span class="num">05</span><h3>One system of record per concern</h3><p>Trello for planning. GitHub for code. Harvest for time. Link them — do not duplicate.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">What we standardize</p>
+      <h2>Nine practice categories</h2>
+      <table>
+        <tr><th>#</th><th>Category</th><th>Enforcement</th></tr>
+        <tr><td>1–2</td><td>Environment, Cursor, MCP, AI workflow</td><td>Required onboarding</td></tr>
+        <tr><td>3–5</td><td>Source control, docs, quality &amp; review</td><td>Merge gates</td></tr>
+        <tr><td>6–7</td><td>Handoff, security &amp; UBC compliance</td><td>Zero exceptions on secrets</td></tr>
+        <tr><td>8–9</td><td>Trello + Harvest</td><td>All active projects</td></tr>
+      </table>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Rollout</p>
+      <h2>Start where AI is strongest</h2>
+      <div class="phase">
+        <div class="step">
+          <span class="pill yes">Phase 1 · Term 1</span>
+          <h3>Web</h3>
+          <p>Full agents, MCP, CI, docs gates. All new web repos.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <span class="pill partial">Phase 2 · Term 2</span>
+          <h3>Unity</h3>
+          <p>C# only. Ignore scenes and prefabs. Git LFS for assets.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="step">
+          <span class="pill caution">Phase 3 · Term 3+</span>
+          <h3>Unreal</h3>
+          <p>C++ assist in whitelisted modules. Blueprints stay human.</p>
+        </div>
+      </div>
+      <p class="lede" style="max-width: none; margin-top: 1.6rem; font-size: 1.05rem;">Pilot one web project in month one of a hiring cycle, then promote lab-wide after a retro.</p>
+    </section>
+
+    <section class="slide light">
+      <p class="kicker">When to use AI</p>
+      <h2>Not every task is an agent task</h2>
+      <table>
+        <tr><th>Task</th><th>AI?</th><th>How</th></tr>
+        <tr><td>Find where X lives</td><td><strong>Yes</strong></td><td>Tree-sitter MCP first</td></tr>
+        <tr><td>Scaffold, tests, bounded refactor</td><td><strong>Yes</strong></td><td>Agent + project rules; you verify</td></tr>
+        <tr><td>Debug with a repro</td><td><strong>Partial</strong></td><td>Agent suggests; you validate in runtime</td></tr>
+        <tr><td>Architecture / tech choice</td><td><strong>No</strong></td><td>Human lead + written decision</td></tr>
+        <tr><td>Unreal Blueprint logic</td><td><strong>No</strong></td><td>Human-authored; export docs</td></tr>
+      </table>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Category 1–2</p>
+      <h2>Cursor + tree-sitter MCP</h2>
+      <div class="two-col">
+        <div>
+          <ul class="plain">
+            <li>Every repo ships <code>.cursor/mcp.json</code> and search rules.</li>
+            <li>Agents must query symbols before reading whole files.</li>
+            <li>Saves tokens, reduces shallow edits, keeps context small.</li>
+            <li>Needs Python 3.11+ and <code>uv</code>. MCP must show green in Cursor.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Lab-standard server</h3>
+          <p style="margin-top:0.6rem;"><strong>codetree</strong> — local AST index, no vector DB.</p>
+          <p style="margin-top:0.6rem;">Web: TS/JS · Unity: C# · Unreal: C/C++ headers and sources.</p>
+          <p style="margin-top:0.6rem;">Never dump <code>node_modules</code>, Unity <code>Library/</code>, or Unreal binaries into chat.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide light">
+      <p class="kicker">Token discipline</p>
+      <h2>Keep sessions small and honest</h2>
+      <ul class="plain">
+        <li>Use Ask / Plan to explore. Use Agent for one feature or bug at a time.</li>
+        <li>Never commit AI output without reading the diff.</li>
+        <li>Disclose AI use on every PR. Reviewers check behavior, not just green CI.</li>
+        <li>Run <code>/review-eml</code> before opening a pull request.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Category 3</p>
+      <h2>Source control is non-negotiable</h2>
+      <div class="grid cols-3">
+        <div class="card"><h3>Protected <code>main</code></h3><p>No direct pushes. PR + ≥1 approval. Branch deleted after merge.</p></div>
+        <div class="card"><h3>Branch names</h3><p><code>feat/*</code> · <code>fix/*</code> · <code>docs/*</code> — docs PRs are the first-week exercise.</p></div>
+        <div class="card"><h3>Conventional commits</h3><p><code>feat(web): …</code><br><code>fix(unity): …</code><br><code>docs: …</code></p></div>
+      </div>
+      <p class="lede" style="max-width:none;margin-top:1.4rem;font-size:1.05rem;">Web: no binaries &gt; 1 MB. Unity/Unreal: Git LFS for assets. Never commit secrets.</p>
+    </section>
+
+    <section class="slide light">
+      <p class="kicker">Category 4</p>
+      <h2>Four documents every repo needs</h2>
+      <div class="grid cols-2">
+        <div class="card"><h3>README.md</h3><p>Setup, run, test, deploy in ≤10 commands. Contact + layout.</p></div>
+        <div class="card"><h3>docs/architecture.md</h3><p>Components, data flow, external services, tech debt.</p></div>
+        <div class="card"><h3>docs/setup.md</h3><p>Tool versions, env vars, MCP troubleshooting, hardware.</p></div>
+        <div class="card"><h3>docs/handoff.md</h3><p>Updated every semester: what works, WIP, gotchas, next priorities.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Category 5</p>
+      <h2>Quality is platform-specific</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <span class="pill yes">Web</span>
+          <h3>Full CI gate</h3>
+          <p>ESLint, Prettier, TypeScript strict, tests, GitHub Actions on every PR.</p>
+        </div>
+        <div class="card">
+          <span class="pill partial">Unity</span>
+          <h3>C# + screenshots</h3>
+          <p>Analyzers and Edit Mode tests. No AI-edited YAML. Scene PRs need a screenshot.</p>
+        </div>
+        <div class="card">
+          <span class="pill caution">Unreal</span>
+          <h3>Human-heavy review</h3>
+          <p>clang-format for C++. Blueprint changes require exported docs.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide light">
+      <p class="kicker">Category 6</p>
+      <h2>A 12-week semester rhythm</h2>
+      <table>
+        <tr><th>Weeks</th><th>Focus</th></tr>
+        <tr><td>1–2</td><td>Onboarding, MCP green, docs-only first PR, Trello + Harvest access</td></tr>
+        <tr><td>3–10</td><td>Feature work. Weekly 3-bullet status on the Trello card: done / doing / blocked</td></tr>
+        <tr><td>11–12</td><td>Handoff doc, tagged demo release, Harvest export, retrospective</td></tr>
+      </table>
+      <p class="lede" style="max-width:none;">No single hero owner. Returning students mentor the first two weeks.</p>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Categories 8–9</p>
+      <h2>Trello plans. Harvest times.</h2>
+      <div class="two-col">
+        <div class="card">
+          <h3>Trello — one board per codename</h3>
+          <p style="margin-top:0.7rem;">Backlog → Ready → In Progress → In Review → Done → Handoff notes</p>
+          <p style="margin-top:0.7rem;">Code cards need a GitHub issue before <strong>In Progress</strong>. Tag <code>this-term</code> vs <code>future</code>.</p>
+        </div>
+        <div class="card">
+          <h3>Harvest — same codename</h3>
+          <p style="margin-top:0.7rem;">Log daily. Start the timer from the Trello card.</p>
+          <p style="margin-top:0.7rem;">Dev notes must include the issue number. Use the <strong>AI-assisted dev</strong> task when you used Cursor.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide light">
+      <p class="kicker">Integration</p>
+      <h2>One feature, end to end</h2>
+      <div class="flow" style="margin-top:0.4rem;">
+        <span class="n">Trello Ready</span><i>→</i>
+        <span class="n">GitHub issue</span><i>→</i>
+        <span class="n">Harvest timer</span><i>→</i>
+        <span class="n">Cursor + MCP</span><i>→</i>
+        <span class="n">PR / review</span><i>→</i>
+        <span class="n">Merge</span><i>→</i>
+        <span class="n">Close issue</span><i>→</i>
+        <span class="n">Trello Done</span>
+      </div>
+      <ul class="plain" style="margin-top:1.8rem;">
+        <li>No orphan PRs. No orphan issues. No untracked dev time.</li>
+        <li>Detailed spec lives in GitHub. Trello holds a summary plus a link.</li>
+        <li><code>non-code</code> work (equipment, admin) skips GitHub — still log Harvest.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Category 7</p>
+      <h2>Security has no exceptions</h2>
+      <ul class="plain">
+        <li>Secrets never live in git. <code>.env.example</code> only. Use 1Password or GitHub Secrets.</li>
+        <li>No student records or confidential research pasted into public models.</li>
+        <li>Follow UBC IT policy. Track Unity / Unreal / OSS licenses.</li>
+        <li>Secret scanning (gitleaks) on org repos.</li>
+      </ul>
+    </section>
+
+    <section class="slide light">
+      <p class="kicker">Getting started</p>
+      <h2>Week 1 checklist</h2>
+      <div class="grid cols-2">
+        <div class="card"><h3>Access</h3><p>GitHub org, Trello board, Harvest project, Cursor license.</p></div>
+        <div class="card"><h3>MCP</h3><p>Install <code>uv</code>. Open the repo. Confirm codetree is green.</p></div>
+        <div class="card"><h3>Clone &amp; run</h3><p>Follow README. First merge is a docs-only PR within a week.</p></div>
+        <div class="card"><h3>Time</h3><p>Log your first Harvest entry from a Trello card.</p></div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Template</p>
+      <h2>New web repos start from the GitHub template</h2>
+      <ul class="plain">
+        <li><code>template/</code> includes <code>.cursor/</code>, MCP, PR/issue forms, docs, and CI stubs.</li>
+        <li>Use this template → name the repo with the project <strong>codename</strong>.</li>
+        <li>Replace placeholders, add Trello + Harvest URLs, enable branch protection.</li>
+        <li>Full write-up lives in <code>PLAN.md</code> in the standards repo.</li>
+      </ul>
+    </section>
+
+    <section class="slide light">
+      <p class="kicker">Remember</p>
+      <h2>If you only keep five rules</h2>
+      <ul class="plain">
+        <li>Search with MCP. Don’t paste the whole repo into chat.</li>
+        <li>Protected <code>main</code>, reviewed PRs, conventional commits.</li>
+        <li>README, architecture, and a semester handoff — always.</li>
+        <li>Trello · GitHub · Harvest stay linked. Codename is the same everywhere.</li>
+        <li>Web: full AI. Unity: C# only. Unreal: C++ help; Blueprints are yours.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <p class="kicker">Emerging Media Lab</p>
+      <h1>Questions?</h1>
+      <p class="lede">Read <strong>PLAN.md</strong> in the standards repo. Ask your project lead. eml.ubc.ca</p>
+      <p class="meta">← → or space to navigate · F for fullscreen · P to print / PDF</p>
+    </section>
+
+  </div>
+
+  <div class="footer-bar">
+    <span>EML · AI coding standards</span>
+    <span class="help">← → Space · F fullscreen</span>
+    <span id="counter">1 / 1</span>
+    <div class="progress"><i id="bar"></i></div>
+  </div>
+
+  <script>
+    const slides = [...document.querySelectorAll(".slide")];
+    const counter = document.getElementById("counter");
+    const bar = document.getElementById("bar");
+    let i = 0;
+
+    function show(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, idx) => s.classList.toggle("active", idx === i));
+      counter.textContent = (i + 1) + " / " + slides.length;
+      bar.style.width = ((i + 1) / slides.length * 100) + "%";
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (["ArrowRight", "ArrowDown", "PageDown", " ", "Enter"].includes(e.key)) {
+        e.preventDefault(); show(i + 1);
+      } else if (["ArrowLeft", "ArrowUp", "PageUp", "Backspace"].includes(e.key)) {
+        e.preventDefault(); show(i - 1);
+      } else if (e.key === "Home") { show(0); }
+      else if (e.key === "End") { show(slides.length - 1); }
+      else if (e.key === "f" || e.key === "F") {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+      } else if (e.key === "p" || e.key === "P") {
+        window.print();
+      }
+    });
+
+    document.getElementById("deck").addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      const x = e.clientX / window.innerWidth;
+      show(x > 0.25 ? i + 1 : i - 1);
+    });
+
+    show(0);
+  </script>
+</body>
+</html>

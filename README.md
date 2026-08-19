@@ -5,6 +5,7 @@ Standards, templates, and checklists for **Emerging Media Lab** student projects
 ## Start here
 
 - **[PLAN.md](./PLAN.md)** — Full implementation plan: practice categories, phased rollout (web → Unity → Unreal), source control, documentation, tree-sitter MCP, Trello, and Harvest.
+- **[docs/slides.html](./docs/slides.html)** — Onboarding slideshow summarizing the standards (open in a browser).
 
 ## Quick links (once templates exist)
 
