@@ -6,6 +6,7 @@ Standards, templates, and checklists for **Emerging Media Lab** student projects
 
 - **[PLAN.md](./PLAN.md)** — Full implementation plan: practice categories, phased rollout (web → Unity → Unreal), source control, documentation, tree-sitter MCP, Trello, and Harvest.
 - **[docs/slides.html](./docs/slides.html)** — Onboarding slideshow summarizing the standards (open in a browser).
+- **Presentation skill** — `.cursor/skills/eml-presentation/` (themeable; EML default).
 
 ## Quick links (once templates exist)
 
@@ -17,6 +18,7 @@ Standards, templates, and checklists for **Emerging Media Lab** student projects
 | `templates/reviewer-guide.md` | Human code review guide (web Phase 1) |
 | `template/.cursor/REVIEW.md` | EML review rules (per project; used by `/review-eml`) |
 | `.cursor/skills/eml-code-review/` | `/review-eml` skill — local AI code review |
+| `.cursor/skills/eml-presentation/` | HTML briefing slideshows (EML style, themeable) |
 | `templates/trello/` | Board setup and card description templates |
 | `template/` | **GitHub project template** — `.cursor/`, MCP, docs, issue/PR templates |
 | `templates/github-template-setup.md` | How to publish `template/` as a GitHub template repo |
