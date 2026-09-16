@@ -1,8 +1,8 @@
 # Code review rules — CODENAME
 
-Replace `CODENAME` with this project's codename. The `/review-eml` skill reads this file when reviewing branch changes before a PR.
+Replace `CODENAME` with this project's codename. The `eml-code-review` skill (invoke with `/eml-code-review`) reads this file when reviewing branch changes before a PR.
 
-**Stack:** Web (Phase 1) — TypeScript strict, Node.js LTS. Update framework-specific sections in `.cursor/rules/project.mdc` before your first feature PR.
+**Stack:** Web (Phase 1) — TypeScript strict, Node.js LTS. Update framework-specific sections in `.kiro/steering/project.md` before your first feature PR.
 
 ---
 
@@ -130,7 +130,7 @@ If the PR template's **AI disclosure** is checked, verify the author listed what
 
 ## References
 
-- Review skill: `.cursor/skills/eml-code-review/SKILL.md` — run with `/review-eml`
-- Project conventions: `.cursor/rules/project.mdc`
+- Review skill: `.kiro/skills/eml-code-review/SKILL.md` — invoke with `/eml-code-review`
+- Project conventions: `.kiro/steering/project.md`
 - Lab standards: [EML AI Coding Standards](https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards)
 - Reviewer guide: `templates/reviewer-guide.md` in the standards repo

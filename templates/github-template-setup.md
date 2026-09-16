@@ -6,21 +6,21 @@ This folder is a **complete EML project scaffold** you can publish as a GitHub t
 
 ```
 template/
-├── .cursor/
-│   ├── REVIEW.md                # EML review rules (used by /review-eml)
+├── .kiro/
+│   ├── REVIEW.md                # EML review rules (used by /eml-code-review)
 │   ├── skills/
-│   │   └── eml-code-review/     # /review-eml skill
-│   ├── mcp.json                 # codetree (tree-sitter MCP)
-│   └── rules/
-│       ├── code-search.mdc      # MCP-first search policy
-│       └── project.mdc          # Stack and workflow conventions
-├── .cursorignore                # Paths agents should skip
+│   │   └── eml-code-review/     # /eml-code-review skill
+│   ├── settings/
+│   │   └── mcp.json             # Optional MCP servers (empty/disabled by default)
+│   └── steering/
+│       ├── code-search.md       # Search discipline + paths to skip
+│       └── project.md           # Stack and workflow conventions
 ├── .github/
 │   ├── pull_request_template.md
 │   └── ISSUE_TEMPLATE/          # Bug + feature forms (Trello link field)
 ├── docs/
 │   ├── architecture.md
-│   ├── setup.md                 # Includes MCP troubleshooting
+│   ├── setup.md                 # Env vars, secrets, lab-specific setup
 │   └── handoff.md
 ├── src/                         # Application source (empty starter)
 ├── .env.example
@@ -41,7 +41,7 @@ Use one repo in the EML GitHub org (e.g. `eml-project-template`) whose **root** 
 cd template
 git init
 git add .
-git commit -m "Initial EML project template with Cursor codetree MCP"
+git commit -m "Initial EML project template with Kiro config"
 git branch -M main
 git remote add origin git@github.com:UBC-Emerging-Media-Lab/eml-project-template.git
 git push -u origin main
@@ -84,26 +84,24 @@ Option A is better for **Use this template** on GitHub.
 
 After creating a repo from the template:
 
-- [ ] Replace `CODENAME` in README, `docs/*`, `.cursor/rules/project.mdc`, `package.json`
-- [ ] Update `.cursor/rules/project.mdc` with actual stack (Next.js, Vite, etc.)
+- [ ] Replace `CODENAME` in README, `docs/*`, `.kiro/steering/project.md`, `package.json`
+- [ ] Update `.kiro/steering/project.md` with actual stack (Next.js, Vite, etc.)
 - [ ] Add Trello and Harvest URLs to README and `docs/setup.md`
 - [ ] Create matching Trello board ([board-setup.md](./trello/board-setup.md))
 - [ ] Create Harvest project (same codename)
 - [ ] Replace placeholder `npm` scripts with real dev/lint/test/build commands
 - [ ] Complete [branch protection checklist](./github-branch-protection.md) (CI + human review)
-- [ ] Customize `.cursor/REVIEW.md` with project-specific review rules
-- [ ] Verify `/review-eml` runs in Cursor on a test branch
+- [ ] Customize `.kiro/REVIEW.md` with project-specific review rules
+- [ ] Verify `/eml-code-review` runs in Kiro on a test branch
 - [ ] Share [reviewer guide](./reviewer-guide.md) with project leads
-- [ ] Verify codetree MCP: Cursor → Settings → MCP → green
+- [ ] Confirm the `eml-code-review` skill appears in Kiro (Agent Steering & Skills panel)
 - [ ] First PR: docs-only update proving workflow (onboarding task)
 
 ## Prerequisites for all students
 
 | Tool | Purpose |
 |------|---------|
-| [Cursor](https://cursor.com) | AI-assisted IDE |
-| [uv](https://docs.astral.sh/uv/) | Runs codetree MCP (`uvx`) |
-| Python ≥3.11 | codetree dependency |
+| [Kiro](https://kiro.dev) | AI-assisted IDE |
 | Node.js LTS | Web projects (Phase 1) |
 
 ## Updating the template
@@ -118,6 +116,6 @@ When lab standards change:
 
 - [PLAN.md](../PLAN.md) — full lab standards
 - [Branch protection checklist](./github-branch-protection.md) — required checks and review workflow
-- [Reviewer guide](./reviewer-guide.md) — human review after CI and `/review-eml`
+- [Reviewer guide](./reviewer-guide.md) — human review after CI and `/eml-code-review`
 - [Trello board setup](./trello/board-setup.md)
 - [Trello card template](./trello/card-template.md)

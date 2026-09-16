@@ -11,10 +11,10 @@ Every PR passes through three layers before merge. Know what each layer covers s
 | Layer | Tool | What it catches | What it misses |
 |-------|------|-----------------|------------------|
 | **CI** | GitHub Actions (`lint`, `test`, `build`) | Syntax, types, formatting, failing tests, broken builds | Logic bugs, UX, security design, architecture fit |
-| **AI review** | `/review-eml` skill (local, before PR) | Likely bugs, security anti-patterns, missing tests/docs, acceptance criteria gaps | Domain correctness, product intent, nuanced lab conventions |
+| **AI review** | `/eml-code-review` skill (local, before PR) | Likely bugs, security anti-patterns, missing tests/docs, acceptance criteria gaps | Domain correctness, product intent, nuanced lab conventions |
 | **Human review** | You | Behavior, maintainability, handoff quality, AI verification | — |
 
-**Rule of thumb:** If CI is green and the author ran `/review-eml`, you are not done. You are starting the human review.
+**Rule of thumb:** If CI is green and the author ran `/eml-code-review`, you are not done. You are starting the human review.
 
 ---
 
@@ -41,9 +41,9 @@ Move the Trello card to **In Review** when the PR opens; move to **Done** only a
 
 ### EML code review
 
-- [ ] PR includes output from `/review-eml` (or states "EML review found no issues")
+- [ ] PR includes output from `/eml-code-review` (or states "EML review found no issues")
 - [ ] All **Critical** and **High** findings are fixed or explicitly justified
-- [ ] If no review summary is present, request changes and ask author to run `/review-eml`
+- [ ] If no review summary is present, request changes and ask author to run `/eml-code-review`
 
 ### AI-assisted PRs
 
@@ -70,7 +70,7 @@ When **No AI assistance** is checked:
 
 Ask: **"Could the next student understand and change this without asking me?"**
 
-- [ ] Names and structure match existing project conventions (see `.cursor/rules/project.mdc`)
+- [ ] Names and structure match existing project conventions (see `.kiro/steering/project.md`)
 - [ ] Non-obvious logic has a brief comment or is broken into a well-named function
 - [ ] No dead code, commented-out blocks, or debug `console.log` left behind
 - [ ] Change size is reasonable — large PRs should be split (see below)
@@ -101,7 +101,7 @@ Ask: **"Could the next student understand and change this without asking me?"**
 ### Request changes when
 
 - CI failures are unaddressed
-- No `/review-eml` summary and author did not run review
+- No `/eml-code-review` summary and author did not run review
 - Critical or High EML review findings left unfixed without explanation
 - Behavior does not match the issue or is untested
 - Security concern (secrets, auth, injection, data exposure)
@@ -145,16 +145,16 @@ Large AI-assisted PRs are a red flag — agents work best in small, bounded task
 
 ---
 
-## `/review-eml` workflow for reviewers
+## `/eml-code-review` workflow for reviewers
 
-Students run `/review-eml` **before** opening the PR and paste the output into the PR description.
+Students run `/eml-code-review` **before** opening the PR and paste the output into the PR description.
 
 As a reviewer:
 
 1. Read the pasted review summary in the PR
 2. **True positive still open** — request changes
-3. **False positive** — note in PR comment; suggest updating `.cursor/REVIEW.md` if recurring
-4. **Complex PR** — check out branch and run `/review-eml` yourself for a second pass
+3. **False positive** — note in PR comment; suggest updating `.kiro/REVIEW.md` if recurring
+4. **Complex PR** — check out branch and run `/eml-code-review` yourself for a second pass
 
 ---
 
@@ -168,7 +168,7 @@ npm run lint && npm test && npm run build
 npm run dev   # manual verification
 ```
 
-Then run `/review-eml` in Cursor on the checked-out branch.
+Then run `/eml-code-review` in Kiro on the checked-out branch.
 
 ---
 
@@ -190,7 +190,7 @@ Before students leave:
 
 - [ ] No PRs left open without a note in `docs/handoff.md`
 - [ ] All merged code on `main` was reviewed (check branch protection was not bypassed)
-- [ ] Retrospective question: Did `/review-eml` catch real issues? Tune `.cursor/REVIEW.md` for next term.
+- [ ] Retrospective question: Did `/eml-code-review` catch real issues? Tune `.kiro/REVIEW.md` for next term.
 
 ---
 
@@ -198,6 +198,6 @@ Before students leave:
 
 - [PLAN.md](../PLAN.md) — §5.4 Human review norms
 - [github-branch-protection.md](./github-branch-protection.md) — merge gates and required checks
-- [REVIEW.md](../template/.cursor/REVIEW.md) — review rules (per project repo)
-- [eml-code-review skill](../template/.cursor/skills/eml-code-review/SKILL.md) — `/review-eml` workflow
+- [REVIEW.md](../template/.kiro/REVIEW.md) — review rules (per project repo)
+- [eml-code-review skill](../template/.kiro/skills/eml-code-review/SKILL.md) — `/eml-code-review` workflow
 - [Trello board setup](./trello/board-setup.md) — **In Review** list workflow

@@ -2,4 +2,4 @@ blank_issues_enabled: false
 contact_links:
   - name: EML Coding Standards
     url: https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards
-    about: Lab development standards, Trello/Harvest workflow, and Cursor setup
+    about: Lab development standards, Trello/Harvest workflow, and Kiro setup

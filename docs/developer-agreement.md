@@ -22,8 +22,8 @@ I, **________________________** (print name), agree to follow the Emerging Media
 
 I will:
 
-- [ ] Install and configure **Cursor IDE** (or approved equivalent) with required MCP tools
-- [ ] Set up **tree-sitter MCP** (codetree) for structured code search before raw file reads
+- [ ] Install and configure **Kiro IDE** (or approved equivalent)
+- [ ] Use Kiro's built-in structured code search before dumping whole files into context
 - [ ] Use **Git** for all source control; never commit directly to `main`
 - [ ] Complete the onboarding checklist within my first week
 - [ ] Maintain access to **Trello** and **Github** accounts
@@ -36,10 +36,10 @@ I will:
 
 I understand that:
 
-- AI tools (Cursor agents, Copilot, etc.) **assist** development but **do not replace** my responsibility for code quality and correctness
+- AI tools (Kiro agents, Copilot, etc.) **assist** development but **do not replace** my responsibility for code quality and correctness
 - I must **read, understand, and verify** all AI-generated code before committing
 - I will **never** merge AI output without manual testing and review
-- I will use **tree-sitter MCP tools** for code navigation before reading entire files
+- I will use Kiro's built-in structured code search for navigation before dumping whole files into context
 - I will follow platform-specific AI guidance:
   - **Web:** Full AI assistance allowed
   - **Unity:** AI for C# only; no AI edits to `.unity`, `.prefab`, or Project Settings
@@ -198,7 +198,7 @@ I understand that:
 3. These standards exist to ensure:
   - Code quality and maintainability across semester turnovers
   - Security and compliance with UBC policies
-  - Effective use of lab resources (Cursor licenses, project budgets, lead time)
+  - Effective use of lab resources (AI tool licenses, project budgets, lead time)
   - Successful project handoffs when I complete my term
 4. I can ask questions at any time — leads and returning students are available to help
 5. Standards may be updated during my term; I will review changes when notified
@@ -231,12 +231,12 @@ I understand that:
 - **Implementation plan:** [PLAN.md](https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards/blob/main/PLAN.md)
 - **Onboarding slideshow:** [docs/slides.html](https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards/blob/main/docs/slides.html)
 - **Project template:** [template/](https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards/tree/main/template)
-- **Review checklist:** `.cursor/skills/eml-code-review/checklist.md`
+- **Review checklist:** `.kiro/skills/eml-code-review/checklist.md`
 - **Trello board setup:** [templates/trello/board-setup.md](https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards/blob/main/templates/trello/board-setup.md)
 - **Reviewer guide:** [templates/reviewer-guide.md](https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards/blob/main/templates/reviewer-guide.md)
 
 ---
 
-*Document version: 1.1*  
-*Based on EML AI-Assisted Development Standards v0.2*  
-*Last updated: September 15, 2026*
+*Document version: 1.2*  
+*Based on EML AI-Assisted Development Standards v0.3 (Kiro)*  
+*Last updated: September 16, 2026*

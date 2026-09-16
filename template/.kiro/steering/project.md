@@ -1,6 +1,5 @@
 ---
-description: EML project conventions and stack
-alwaysApply: true
+inclusion: always
 ---
 
 # Project: CODENAME
@@ -46,7 +45,7 @@ Update this table when scripts change.
 - **GitHub Issues** — authoritative tracker for code work
 - **Harvest** — log time daily; note issue `#` in entries
 - **PRs** — conventional commits; fill PR template including AI disclosure
-- **Pre-PR review** — run `/review-eml` locally; fix Critical/High findings; paste summary into PR
+- **Pre-PR review** — run `/eml-code-review` locally; fix Critical/High findings; paste summary into PR
 
 ## Documentation
 

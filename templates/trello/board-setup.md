@@ -145,7 +145,7 @@ Create these starter cards:
 - Labels: `non-code`
 - Checklist:
   - [ ] GitHub org access
-  - [ ] Cursor + MCP working
+  - [ ] Kiro set up (steering + skills load)
   - [ ] Harvest access + first time entry
   - [ ] Clone repo; run setup
   - [ ] Docs-only first PR merged
@@ -172,5 +172,5 @@ Add to project `README.md`:
 
 - [ ] All lists, labels, fields, and Butler rules in place
 - [ ] Harvest and GitHub integrations verified
-- [ ] Team walked through workflow (Trello → GitHub → Harvest → Cursor)
+- [ ] Team walked through workflow (Trello → GitHub → Harvest → Kiro)
 - [ ] `this-term` scope agreed and tagged on backlog cards

@@ -1,6 +1,6 @@
 # EML review checklist (condensed)
 
-Use when `.cursor/REVIEW.md` is missing. Prefer reading `.cursor/REVIEW.md` in this repo.
+Use when `.kiro/REVIEW.md` is missing. Prefer reading `.kiro/REVIEW.md` in project repos.
 
 ## Security
 

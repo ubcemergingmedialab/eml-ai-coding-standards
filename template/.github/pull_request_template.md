@@ -20,14 +20,14 @@
 
 ## EML code review
 
-- [ ] Ran `/review-eml` on branch changes before opening this PR
+- [ ] Ran `/eml-code-review` on branch changes before opening this PR
 - [ ] Fixed all Critical and High findings (or explained below)
 
 <!-- Paste review summary table here, or write "EML review found no issues." -->
 
 ## AI disclosure
 
-- [ ] AI assisted (Cursor / other)
+- [ ] AI assisted (Kiro / other)
 - [ ] No AI assistance
 
 <!-- If checked above, briefly note what the agent did and what you verified manually -->

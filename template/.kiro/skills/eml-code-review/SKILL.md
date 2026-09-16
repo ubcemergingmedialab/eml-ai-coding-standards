@@ -2,17 +2,18 @@
 name: eml-code-review
 description: >-
   Review code changes against EML web project standards (security, correctness,
-  tests, docs, AI-generated code scrutiny). Use when the user asks for /review-eml,
-  EML code review, pre-PR review, or review before opening a pull request.
+  tests, docs, AI-generated code scrutiny). Use when the user asks for
+  /eml-code-review, EML code review, pre-PR review, or review before opening a
+  pull request.
 ---
 
 # EML Code Review
 
-Perform a structured code review for EML Phase 1 web projects. This skill replaces Cursor Bugbot — reviews run locally in Cursor using normal agent usage (no separate Bugbot billing).
+Perform a structured code review for EML Phase 1 web projects. Reviews run locally in Kiro using normal agent usage — no separate review service or billing.
 
 ## When to use
 
-- User runs `/review-eml` or asks for an EML code review
+- User runs `/eml-code-review` or asks for an EML code review
 - Before opening a PR (required by EML workflow)
 - Reviewer wants a second AI pass on a branch
 
@@ -21,8 +22,8 @@ Perform a structured code review for EML Phase 1 web projects. This skill replac
 1. **Identify the repository root** — use the active workspace or the path the user specifies.
 
 2. **Load standards** (read in this order):
-   - `.cursor/REVIEW.md` — project review rules (required in EML web repos)
-   - `.cursor/rules/project.mdc` — stack and conventions
+   - `.kiro/REVIEW.md` — project review rules (required in EML web repos)
+   - `.kiro/steering/project.md` — stack and conventions
    - [checklist.md](checklist.md) — condensed fallback if `REVIEW.md` is missing
 
 3. **Determine the diff scope**:
@@ -113,7 +114,7 @@ If git diff fails (empty repo, no commits, etc.):
 
 ### Reviewer running on someone else's PR
 
-Same workflow. Emphasize acceptance criteria and behavior over style. Note anything the PR author should have caught in `/review-eml`.
+Same workflow. Emphasize acceptance criteria and behavior over style. Note anything the PR author should have caught in `/eml-code-review`.
 
 ## What this skill does not do
 
@@ -124,6 +125,6 @@ Same workflow. Emphasize acceptance criteria and behavior over style. Note anyth
 
 ## Additional resources
 
-- Full review rules: `.cursor/REVIEW.md`
-- Human reviewer guide: [reviewer-guide.md](../../../templates/reviewer-guide.md) in standards repo
-- Lab plan: [PLAN.md](../../../PLAN.md) §5
+- Full review rules: `.kiro/REVIEW.md`
+- Human reviewer guide: [reviewer-guide.md](../../../../templates/reviewer-guide.md) in standards repo
+- Lab plan: [PLAN.md](../../../../PLAN.md) §5

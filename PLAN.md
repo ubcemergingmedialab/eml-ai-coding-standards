@@ -12,7 +12,7 @@ This plan defines **categories of development practice**, a **phased rollout** (
 **Core principles**
 
 1. **AI assists; humans own decisions** — Students remain accountable for architecture, merges, and shipped behavior.
-2. **Structured search before raw reads** — Use tree-sitter MCP for navigation; reserve full-file context for targeted edits.
+2. **Structured search before raw reads** — Use Kiro's built-in structured code search for navigation; reserve full-file context for targeted edits.
 3. **Documentation is a handoff artifact** — Every project must survive a semester turnover without oral tradition.
 4. **Platform realism** — Mandate AI workflows where they work; constrain them where they fail (Unreal Blueprints, asset pipelines).
 5. **One system of record per concern** — Trello for planning, GitHub for code tasks, Harvest for time; link them, don't duplicate.
@@ -24,7 +24,7 @@ This plan defines **categories of development practice**, a **phased rollout** (
 | Category | Purpose | Enforcement level |
 |----------|---------|-------------------|
 | [1. Environment & tooling](#1-environment--tooling) | Consistent IDE, MCP, and project setup | Required — onboarding checklist |
-| [2. AI-assisted workflow](#2-ai-assisted-workflow) | When/how to use agents, rules, and skills | Required — project `.cursor/` + review |
+| [2. AI-assisted workflow](#2-ai-assisted-workflow) | When/how to use agents, steering, and skills | Required — project `.kiro/` + review |
 | [3. Source control](#3-source-control) | Git hygiene, branching, assets | Required — branch protection + PR template |
 | [4. Documentation](#4-documentation) | README, architecture, runbooks | Required — merge gate |
 | [5. Code quality & review](#5-code-quality--review) | Linting, testing, human review | Required (web/Unity C#); recommended (Unreal) |
@@ -32,7 +32,7 @@ This plan defines **categories of development practice**, a **phased rollout** (
 | [7. Security & compliance](#7-security--compliance) | Secrets, UBC data, licensing | Required — zero exceptions |
 | [8. Project management (Trello)](#8-project-management-trello) | Semester planning, lab-wide visibility | Required — board setup template |
 | [9. Time management (Harvest)](#9-time-management-harvest) | Grant reporting, semester retros | Required — daily logging |
-| [Tooling integration](#tooling-integration) | Trello ↔ GitHub ↔ Harvest ↔ Cursor | Required — linked workflow |
+| [Tooling integration](#tooling-integration) | Trello ↔ GitHub ↔ Harvest ↔ Kiro | Required — linked workflow |
 
 Categories 1–7 have **Phase 1** (mandatory for all new web projects), **Phase 2** (Unity extensions), and **Phase 3** (Unreal extensions where applicable). Categories 8–9 apply to **all active EML projects** regardless of platform.
 
@@ -46,14 +46,14 @@ flowchart LR
   P2 --> P3[Phase 3 — Unreal]
   
   subgraph P1detail [Web — full AI support]
-    W1[Tree-sitter MCP]
-    W2[Cursor rules + PR workflow]
+    W1[Built-in code search]
+    W2[Kiro steering + PR workflow]
     W3[CI + docs gate]
   end
   
   subgraph P2detail [Unity — partial AI support]
-    U1[C# via tree-sitter]
-    U2[Unity .cursorignore]
+    U1[C# structured search]
+    U2[Unity steering excludes]
     U3[Git LFS for assets]
   end
   
@@ -80,71 +80,53 @@ Pilot one web project in the first month of a hiring cycle, then promote standar
 
 | Tool | Role | Notes |
 |------|------|-------|
-| **Cursor** (or approved equivalent) | Primary AI-assisted IDE | Lab-provided license or student install |
+| **Kiro** (or approved equivalent) | Primary AI-assisted IDE | Lab-provided license or student install |
 | **Git** + **GitHub** (EML org) | Source control | SSO where UBC allows |
-| **Tree-sitter MCP** | Structured code search | See [§1.2](#12-tree-sitter-mcp-standard) |
+| **Built-in code search** | Structured code discovery | See [§1.2](#12-code-search-standard) — no extra install |
 | **Node LTS** / **.NET SDK** | Web / Unity respectively | Pin versions in `.tool-versions` or `README` |
 
-### 1.2 Tree-sitter MCP standard
+### 1.2 Code search standard
 
-**Policy:** Agents must use tree-sitter MCP tools for **discovery and navigation** before reading whole files or running broad grep across the repo.
+**Policy:** Agents must use Kiro's built-in structured code search for **discovery and navigation** before reading whole files or running broad grep across the repo.
 
 **Why:** Raw file reads and unstructured search burn context tokens and encourage shallow edits. AST-aware search returns symbols, signatures, and references in compact form.
 
-**Recommended server:** [codeTree](https://github.com/ThinkyMiner/codeTree) (`mcp-server-codetree`) — 23 tools, C/C++ support (Unreal), TypeScript/JavaScript (web), fast local index, no vector DB.
+**How:** Kiro ships structured, AST-aware code reading and search out of the box — no MCP server, Python, or `uv` to install (a change from the previous Cursor + codetree setup). The policy is enforced through a steering file committed to each repo rather than an external tool.
 
-**Alternative:** [mcp-server-tree-sitter](https://github.com/wrale/mcp-server-tree-sitter) — mature, language-pack based.
-
-**Lab-standard project config** (`.cursor/mcp.json`):
-
-```json
-{
-  "mcpServers": {
-    "codetree": {
-      "command": "uvx",
-      "args": [
-        "--from", "mcp-server-codetree",
-        "codetree",
-        "--root", "${workspaceFolder}"
-      ]
-    }
-  }
-}
-```
-
-**Prerequisites:** Python 3.11+ with `uv` installed (`pip install uv` or lab bootstrap script).
-
-**Cursor rule snippet** (`.cursor/rules/code-search.mdc`):
+**Lab-standard steering file** (`.kiro/steering/code-search.md`):
 
 ```markdown
 ---
-description: Prefer structured code search over raw file reads
-alwaysApply: true
+inclusion: always
 ---
 
-Before reading entire files or searching with generic grep:
-1. Use codetree/tree-sitter MCP tools (find_symbol, get_references, run_query).
-2. Read only the line ranges returned by structured search.
-3. Use full-file reads only for files under 100 lines or when editing the whole module.
+# Code search and context discipline
 
-Do not paste large generated assets, lockfiles, or build output into chat.
+Prefer Kiro's built-in tools over dumping whole files or generic terminal search:
+
+1. Use Kiro's code-reading and search tools to locate symbols and references.
+2. Read only the line ranges you need. Reserve full-file reads for small files
+   (under ~100 lines) or when editing a whole module.
+3. Do not paste large generated assets, lockfiles, or build output into chat.
 ```
+
+The same file lists the paths agents should skip (`node_modules/`, build output, `.env`, large media). Agents also honor `.gitignore`.
 
 **Language coverage by platform**
 
-| Platform | tree-sitter useful for | Limited / N/A |
-|----------|------------------------|---------------|
+| Platform | Structured search useful for | Limited / N/A |
+|----------|------------------------------|---------------|
 | Web | `.ts`, `.tsx`, `.js`, `.css` | Generated bundles, `node_modules` |
 | Unity | `.cs` scripts, Editor tooling | `.unity` YAML, prefabs, large meta |
 | Unreal | `.h`, `.cpp` | Blueprints (`.uasset`), shaders |
 
-Add `.cursorignore` per project to exclude `Library/`, `node_modules/`, `Binaries/`, `DerivedDataCache/`, etc.
+For Unity/Unreal, extend `.kiro/steering/code-search.md` to also exclude `Library/`, `Binaries/`, `DerivedDataCache/`, etc.
 
 ### 1.3 Onboarding checklist (every student, week 1)
 
 - [ ] GitHub access to EML org
-- [ ] Cursor installed; MCP shows green in Settings → MCP
-- [ ] `uv` installed; codetree starts without error
+- [ ] Kiro installed; opens the repo with steering and skills loaded
+- [ ] Confirm the `eml-code-review` skill appears (Agent Steering & Skills panel)
 - [ ] Read this repo + project README
 - [ ] Clone via SSH; run project setup script
 - [ ] Complete a **guided first PR** (docs-only or trivial fix)
@@ -159,7 +141,7 @@ Add `.cursorignore` per project to exclude `Library/`, `node_modules/`, `Binarie
 
 | Task | Use AI? | How |
 |------|---------|-----|
-| Find where X is implemented | **Yes** | tree-sitter MCP first |
+| Find where X is implemented | **Yes** | structured code search first |
 | Scaffold new component/module | **Yes** | Agent + project rules |
 | Write tests for existing API | **Yes** | Agent; student verifies assertions |
 | Refactor with clear spec | **Yes** | Plan mode → small PRs |
@@ -169,27 +151,31 @@ Add `.cursorignore` per project to exclude `Library/`, `node_modules/`, `Binarie
 | Unreal Blueprint logic | **No** | Document manually; screenshots |
 | Shader / render pipeline | **Caution** | Human review mandatory |
 
-### 2.2 Project-level Cursor artifacts
+### 2.2 Project-level Kiro artifacts
 
 Every repo **Phase 1+** must include:
 
 ```
-.cursor/
-  mcp.json              # codetree (required)
-  rules/
-    code-search.mdc     # MCP-first search (required)
-    project.mdc         # stack, conventions, paths (required)
-  (optional) skills/    # repeatable lab workflows
+.kiro/
+  REVIEW.md               # EML review rules (used by /eml-code-review) (required)
+  steering/
+    code-search.md        # structured-search discipline (required)
+    project.md            # stack, conventions, paths (required)
+  skills/
+    eml-code-review/      # /eml-code-review pre-PR review (required)
+  settings/
+    mcp.json              # optional MCP servers (disabled by default)
 ```
 
-**`project.mdc` should specify:** framework versions, folder layout, naming conventions, test command, “do not edit” paths, and link to architecture doc.
+**`project.md` should specify:** framework versions, folder layout, naming conventions, test command, “do not edit” paths, and link to architecture doc. Steering files use `inclusion: always` so they load in every session.
 
-### 2.3 Token and cost discipline
+### 2.3 Session and cost discipline
 
-- Prefer **Ask / Plan** for exploration; **Agent** for bounded edits.
+- Use a **Spec** session to plan non-trivial work; **Vibe** for small, exploratory edits.
+- Prefer **Supervised mode** when you want to review each change as it lands; **Autopilot** for bounded, well-scoped tasks.
 - Cap agent scope: one feature or bug per session where possible.
 - Never commit AI output without reading the diff.
-- Lab leads monitor usage if on shared Cursor team plans.
+- Lab leads monitor usage if on shared team plans.
 
 ### 2.4 Platform-specific AI guidance
 
@@ -204,7 +190,7 @@ Every repo **Phase 1+** must include:
 - AI edits **C# only** in `Assets/Scripts/` (and documented Editor paths).
 - Do not ask AI to edit `.unity`, `.prefab`, or Project Settings.
 - Use AI for: MonoBehaviour stubs, interface design, unit tests (NUnit), XML doc comments.
-- Assembly Definition boundaries documented in `project.mdc`.
+- Assembly Definition boundaries documented in `project.md`.
 
 **Unreal (Phase 3 — constrained)**
 
@@ -258,7 +244,7 @@ PR template (`.github/pull_request_template.md`):
 - **What** — one-paragraph summary
 - **Why** — issue link or user story
 - **How tested** — steps or CI link
-- **AI disclosure** — checkbox: “AI assisted (Cursor/etc.)” + brief note
+- **AI disclosure** — checkbox: “AI assisted (Kiro/etc.)” + brief note
 - **Docs updated** — checkbox
 
 ### 3.5 Large files & Unity/Unreal
@@ -543,7 +529,7 @@ Use the same task names on every Harvest project:
 | Task | Log when |
 |------|----------|
 | **Development** | Writing code, configs, shaders (non-AI or mixed) |
-| **AI-assisted dev** | Cursor/agent sessions for implementation |
+| **AI-assisted dev** | Kiro/agent sessions for implementation |
 | **Design** | UI/UX, concept art, level layout |
 | **Research** | Spikes, evaluating tools, reading docs |
 | **Documentation** | README, architecture, handoff, Blueprint exports |
@@ -551,7 +537,7 @@ Use the same task names on every Harvest project:
 | **VR / hardware testing** | Headset testing, device setup, build verification |
 | **Admin** | Onboarding, access requests, license management |
 
-Tag AI-assisted work explicitly — after a semester, compare `AI-assisted dev` hours against rework rates to inform Cursor licensing decisions.
+Tag AI-assisted work explicitly — after a semester, compare `AI-assisted dev` hours against rework rates to inform AI tool licensing decisions.
 
 ### 9.3 Logging practices
 
@@ -588,7 +574,7 @@ EML tools form a linked workflow. Each system owns one concern; integrations are
 | Code, PRs, CI | **GitHub** | Trello custom field, Harvest notes |
 | Time & grant reporting | **Harvest** | Trello timer integration |
 | Technical knowledge | **Repo `docs/`** | Trello card descriptions (one-line + link) |
-| AI-assisted development | **Cursor** + MCP | PR AI disclosure checkbox |
+| AI-assisted development | **Kiro** | PR AI disclosure checkbox |
 
 ### End-to-end feature workflow
 
@@ -596,7 +582,7 @@ EML tools form a linked workflow. Each system owns one concern; integrations are
 flowchart TD
   T[Trello: card in Ready] --> G[GitHub: create/link issue]
   G --> H[Harvest: start timer from Trello card]
-  H --> C[Cursor: MCP search → branch → PR]
+  H --> C[Kiro: structured search → branch → PR]
   C --> R[Trello: move to In Review]
   R --> P[PR merged; CI green]
   P --> I[Close GitHub issue]
@@ -628,7 +614,7 @@ flowchart TD
 
 | Integration | Benefit |
 |-------------|---------|
-| **GitHub MCP** in Cursor | Agents read issues/PRs without pasting context |
+| **GitHub MCP** in Kiro | Agents read issues/PRs without pasting context |
 | **GitHub Actions → Trello** | Auto-comment on card when CI fails (via API/Butler) |
 | **Sentry** (web projects) | Error links in GitHub issues; survives student turnover |
 | **1Password Teams** | Secrets referenced in `docs/setup.md`; never in Trello/GitHub |
@@ -654,7 +640,7 @@ Leads scan boards once per week; no standup meeting required unless `blocked` pe
 | Week | Deliverable |
 |------|-------------|
 | 1 | Publish this plan; create standards repo structure |
-| 2 | `.cursor/mcp.json` + rules templates; Trello board template; **`template/` GitHub project scaffold** |
+| 2 | `.kiro/` steering + skill templates; Trello board template; **`template/` GitHub project scaffold** |
 | 3 | PR template, README template, handoff template; Harvest task list documented |
 | 4 | Pilot on one active web project |
 | 6 | Retro; adjust rules |
@@ -664,7 +650,7 @@ Leads scan boards once per week; no standup meeting required unless `blocked` pe
 ### Term 2 — Unity extension
 
 - Unity `.gitattributes` + LFS template
-- Unity-specific `project.mdc` and `.cursorignore`
+- Unity-specific `project.md` steering and search excludes
 - C#-only AI policy communicated in onboarding
 - Pilot on one Unity VR/non-VR project
 
@@ -685,9 +671,6 @@ eml-ai-coding-standards/
 ├── README.md                 # Quick start for lab leads
 ├── PLAN.md                   # This document
 ├── templates/
-│   ├── cursor/
-│   │   ├── mcp.json
-│   │   └── rules/
 │   ├── github/
 │   │   ├── pull_request_template.md
 │   │   └── workflows/ci-web.yml
@@ -704,7 +687,7 @@ eml-ai-coding-standards/
 │   │   └── card-template.md
 │   └── github-template-setup.md
 ├── template/                 # GitHub project template (→ eml-project-template repo)
-│   ├── .cursor/              # mcp.json + rules (codetree)
+│   ├── .kiro/                # steering + skills + REVIEW.md
 │   ├── .github/
 │   ├── docs/
 │   └── README.md
@@ -723,7 +706,7 @@ eml-ai-coding-standards/
 
 | Metric | Target (after 2 semesters) |
 |--------|----------------------------|
-| Repos with MCP + rules | 100% of new repos |
+| Repos with `.kiro/` steering + review skill | 100% of new repos |
 | README + architecture present | 100% before term-end |
 | Handoff doc completed | 100% of active projects |
 | PRs with AI disclosure | Track; aim for transparency |
@@ -737,8 +720,8 @@ eml-ai-coding-standards/
 
 ## Open decisions (for lab leads)
 
-1. **Cursor Team vs individual licenses** — budget and admin model; use Harvest `AI-assisted dev` data to inform
-2. **Primary tree-sitter MCP** — codetree vs mcp-server-tree-sitter (pick one for support consistency)
+1. **Team vs individual AI tool licenses** — budget and admin model; use Harvest `AI-assisted dev` data to inform
+2. **Kiro-native enforcement** — how far to push agent hooks (lint on save, blocking edits to protected paths) vs steering guidance alone
 3. **Unreal asset VCS** — Git LFS vs Perforce for large projects
 4. **CI runners** — GitHub-hosted vs UBC self-hosted for VR build agents
 5. **Mandatory vs recommended** — which Phase 2/3 rules are merge-blocking
@@ -747,9 +730,10 @@ eml-ai-coding-standards/
 
 ## References
 
+- [Kiro docs](https://kiro.dev/docs/)
+- [Kiro steering](https://kiro.dev/docs/steering/)
+- [Kiro skills](https://kiro.dev/docs/skills/)
 - [Model Context Protocol](https://modelcontextprotocol.io/)
-- [codeTree MCP](https://github.com/ThinkyMiner/codeTree)
-- [Cursor MCP docs](https://docs.cursor.com/context/model-context-protocol)
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Keep a Changelog](https://keepachangelog.com/)
 - [Harvest Trello integration](https://www.getharvest.com/apps/trello)
@@ -757,4 +741,4 @@ eml-ai-coding-standards/
 
 ---
 
-*Document version: 0.2 · Last updated: 2025-06-24*
+*Document version: 0.3 (Kiro) · Last updated: 2026-09-16*

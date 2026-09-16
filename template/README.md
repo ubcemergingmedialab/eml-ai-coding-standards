@@ -21,8 +21,7 @@ One-line description of the project.
 ## Prerequisites
 
 - Node.js LTS (≥20) — see `.nvmrc` or pin version here
-- [uv](https://docs.astral.sh/uv/) (Python package runner, for codetree MCP)
-- [Cursor](https://cursor.com) with MCP enabled
+- [Kiro](https://kiro.dev)
 
 ## Quick start
 
@@ -39,7 +38,7 @@ npm run dev
 ```
 src/           Application source
 docs/          Architecture, setup, handoff
-.cursor/       Cursor MCP + rules (lab standard — commit this)
+.kiro/         Kiro steering, skills, REVIEW.md (lab standard — commit this)
 .github/       PR and issue templates
 ```
 
@@ -52,24 +51,24 @@ docs/          Architecture, setup, handoff
 | Test | `npm test` |
 | Build | `npm run build` |
 
-## Cursor + codetree MCP
+## Kiro configuration
 
-This repo includes lab-standard Cursor configuration:
+This repo includes lab-standard Kiro configuration in `.kiro/`:
 
-1. Install **uv**: `pip install uv` (or lab bootstrap script)
-2. Open the repo in **Cursor**
-3. Go to **Settings → MCP** — `codetree` should show green
-4. Agents will use tree-sitter search before reading whole files (see `.cursor/rules/`)
+- `steering/` — always-on project conventions and code-search discipline
+- `skills/eml-code-review/` — the `/eml-code-review` pre-PR review skill
+- `REVIEW.md` — project review rules the skill reads
+- `settings/mcp.json` — optional MCP servers (disabled by default; Kiro has built-in code search, so none are required)
 
-If MCP fails to start, confirm Python 3.11+ and `uvx` are on your PATH.
+Open the repo in **Kiro** and the steering and skills load automatically. Run `/eml-code-review` before opening a PR.
 
 ## Workflow
 
 1. **Trello** — pick a card in **Ready**; link GitHub issue
 2. **Harvest** — start timer from the card
 3. **Branch** — `feat/short-description` from `main`
-4. **Cursor** — implement; disclose AI use in PR
-5. **PR** — fill template; get review; merge
+4. **Kiro** — implement; disclose AI use in PR
+5. **PR** — run `/eml-code-review`, fill template, get review, merge
 
 See [EML coding standards PLAN.md](https://github.com/UBC-Emerging-Media-Lab/eml-ai-coding-standards/blob/main/PLAN.md).
 

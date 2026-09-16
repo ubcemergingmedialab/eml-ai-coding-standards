@@ -25,7 +25,7 @@ Every code change goes through **three layers of review** before it can be merge
 └─────────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────────┐
-│ 2. AI Review (you run /review-eml before PR)        │
+│ 2. AI Review (you run /eml-code-review before PR)   │
 │    • Security, bugs, missing tests/docs             │
 └─────────────────────────────────────────────────────┘
                       ↓
@@ -44,7 +44,7 @@ Every code change goes through **three layers of review** before it can be merge
 ### Required Steps
 
 1. **Make sure CI is passing** (lint, test, build)
-2. **Run `/review-eml` in Cursor**
+2. **Run `/eml-code-review` in Kiro**
    - This reviews your branch changes against EML standards
    - Fix all **Critical** and **High** findings
    - Explain or fix **Medium** findings
@@ -55,7 +55,7 @@ Every code change goes through **three layers of review** before it can be merge
    - Whether AI assisted you (and what you verified)
    - What docs you updated
 
-### What `/review-eml` Checks
+### What `/eml-code-review` Checks
 
 The AI review looks for these issues (in priority order):
 
@@ -66,7 +66,7 @@ The AI review looks for these issues (in priority order):
 | **Medium** | Maintainability issues, missing docs, weak error handling |
 | **Low** | Minor improvements, optional suggestions |
 
-### Common Issues Caught by `/review-eml`
+### Common Issues Caught by `/eml-code-review`
 
 ✅ **Security**
 - Hardcoded secrets or API keys
@@ -146,7 +146,7 @@ CI and AI review catch *syntax and patterns*. **You catch:**
 
 **You must request changes if:**
 - CI is failing
-- No `/review-eml` summary present
+- No `/eml-code-review` summary present
 - Critical/High findings are unresolved without explanation
 - Behavior doesn't match the issue
 - Security concerns exist
@@ -230,15 +230,15 @@ If you can't review within 2 business days, comment on the PR and reassign.
 
 If someone asks you to review a specific branch:
 1. Check out the branch locally
-2. Run `/review-eml` yourself
+2. Run `/eml-code-review` yourself
 3. Pull the branch and test manually if user-facing
 4. Focus on behavior and maintainability
 
-### When `/review-eml` Finds False Positives
+### When `/eml-code-review` Finds False Positives
 
 If the AI review flags something incorrectly:
 1. Note it in the PR comment
-2. Suggest updating `.cursor/REVIEW.md` if it's recurring
+2. Suggest updating `.kiro/REVIEW.md` if it's recurring
 3. Don't require the author to fix non-issues
 
 ### Empty or Small Diffs
@@ -259,8 +259,8 @@ npm run lint
 npm test
 npm run build
 
-# Review your changes in Cursor
-/review-eml
+# Review your changes in Kiro
+/eml-code-review
 ```
 
 ### For Reviewers (Complex PRs)
@@ -278,7 +278,7 @@ npm run lint && npm test && npm run build
 npm run dev
 
 # Run your own review
-/review-eml
+/eml-code-review
 ```
 
 ---
@@ -287,7 +287,7 @@ npm run dev
 
 ### ✅ Do
 
-- Run `/review-eml` before every PR
+- Run `/eml-code-review` before every PR
 - Fix Critical and High findings
 - Test your changes manually
 - Fill out the PR template completely
@@ -298,7 +298,7 @@ npm run dev
 
 ### ❌ Don't
 
-- Skip `/review-eml` because "CI is green"
+- Skip `/eml-code-review` because "CI is green"
 - Commit secrets, API keys, or tokens
 - Leave dead code or debug logs
 - Submit 1000-line PRs
@@ -310,10 +310,10 @@ npm run dev
 
 ## Where to Get Help
 
-- **Review not working?** Check `.cursor/REVIEW.md` in your project
+- **Review not working?** Check `.kiro/REVIEW.md` in your project
 - **False positives?** Discuss with your project lead
 - **Don't understand a finding?** Ask in your project channel or PR comments
-- **Review too strict or too lenient?** Suggest changes to `.cursor/REVIEW.md`
+- **Review too strict or too lenient?** Suggest changes to `.kiro/REVIEW.md`
 
 ---
 
@@ -323,8 +323,8 @@ Before students leave for the semester:
 
 - [ ] All open PRs are merged or noted in `docs/handoff.md`
 - [ ] All merged code was properly reviewed
-- [ ] Retrospective: Did `/review-eml` catch real issues?
-- [ ] Update `.cursor/REVIEW.md` based on what you learned
+- [ ] Retrospective: Did `/eml-code-review` catch real issues?
+- [ ] Update `.kiro/REVIEW.md` based on what you learned
 
 ---
 
@@ -334,8 +334,8 @@ For more detail, see:
 
 - **PLAN.md §5** — Full review workflow and rationale
 - **templates/reviewer-guide.md** — Detailed reviewer checklist
-- **.cursor/REVIEW.md** — Project-specific review rules (in each project repo)
-- **.cursor/skills/eml-code-review/SKILL.md** — How `/review-eml` works
+- **.kiro/REVIEW.md** — Project-specific review rules (in each project repo)
+- **.kiro/skills/eml-code-review/SKILL.md** — How `/eml-code-review` works
 - **templates/github-branch-protection.md** — Branch protection setup
 
 ---

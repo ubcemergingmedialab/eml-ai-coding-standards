@@ -6,9 +6,7 @@
 |------|---------|-------|
 | Node.js | ≥20 LTS | |
 | npm | _bundled_ | |
-| Python | ≥3.11 | Required for codetree MCP via `uv` |
-| uv | latest | `pip install uv` |
-| Cursor | latest | Lab IDE |
+| Kiro | latest | Lab IDE |
 
 ## First-time setup
 
@@ -27,23 +25,15 @@ Fill in `.env` locally. **Never commit `.env`.**
 
 Production/staging secrets: **GitHub Secrets** or **1Password** (EML vault) — not Trello, not Slack.
 
-## Cursor MCP (codetree)
+## Kiro configuration
 
-Project config lives in `.cursor/mcp.json`. Prerequisites:
+Lab-standard Kiro config lives in `.kiro/`:
 
-1. Python 3.11+
-2. `uv` on PATH
-3. Reload Cursor window after clone
+- `steering/` — always-on project conventions (`project.md`) and code-search discipline (`code-search.md`)
+- `skills/eml-code-review/` — the `/eml-code-review` pre-PR review skill
+- `REVIEW.md` — project review rules the skill reads
 
-Verify: **Cursor → Settings → MCP → codetree** shows connected.
-
-Troubleshooting:
-
-| Symptom | Fix |
-|---------|-----|
-| MCP red / failed | Install uv; run `uvx --from mcp-server-codetree codetree --help` in terminal |
-| Slow first start | codetree builds index on first use; `.codetree/` is gitignored |
-| Wrong root | Open repo folder as workspace root, not a parent directory |
+Open the repo folder as the workspace root in Kiro; steering and skills load automatically. Kiro has built-in structured code search, so no MCP server is required. `settings/mcp.json` holds optional servers (disabled by default) — enable one only if the project needs it.
 
 ## Trello & Harvest
 

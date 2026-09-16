@@ -15,7 +15,7 @@ Complete these before enabling branch protection:
 - [ ] At least one successful CI run exists on `main` (so required checks appear in GitHub settings)
 - [ ] `.github/workflows/ci.yml` runs `lint`, `test`, and `build` without `continue-on-error` (remove placeholders once the project is configured)
 - [ ] PR template is present (`.github/pull_request_template.md`)
-- [ ] `.cursor/skills/eml-code-review/` and `.cursor/REVIEW.md` are in the repo (included in EML template) — see [§4 EML code review](#4-eml-code-review-setup)
+- [ ] `.kiro/skills/eml-code-review/` and `.kiro/REVIEW.md` are in the repo (included in EML template) — see [§4 EML code review](#4-eml-code-review-setup)
 
 ---
 
@@ -47,7 +47,7 @@ Add every check that must pass before merge. Typical EML web project:
 
 > **Note:** Status check names must match exactly. Open a test PR and wait for checks to run before configuring required checks — GitHub only lists checks that have run at least once.
 
-EML does **not** require Cursor Bugbot. AI code review runs locally via `/review-eml` before the PR opens; the PR template asks authors to confirm they ran it.
+AI code review runs locally via `/eml-code-review` before the PR opens; the PR template asks authors to confirm they ran it. No separate review service is required.
 
 ---
 
@@ -87,27 +87,27 @@ Enable **Require review from Code Owners** in branch protection if you use this 
 
 ## 4. EML code review setup
 
-EML uses the **`eml-code-review` Cursor skill** instead of Cursor Bugbot. Reviews run locally before opening a PR — no separate Bugbot billing.
+EML uses the **`eml-code-review` Kiro skill** for AI code review. Reviews run locally before opening a PR — no separate review service or billing.
 
 ### Per-repo files (included in template)
 
 | File | Purpose |
 |------|---------|
-| `.cursor/skills/eml-code-review/SKILL.md` | Review workflow; invoke with `/review-eml` |
-| `.cursor/REVIEW.md` | Project-specific review rules |
+| `.kiro/skills/eml-code-review/SKILL.md` | Review workflow; invoke with `/eml-code-review` |
+| `.kiro/REVIEW.md` | Project-specific review rules |
 | `.github/pull_request_template.md` | Author confirms review was run |
 
 ### Per-repo verification
 
-- [ ] `.cursor/REVIEW.md` exists and project-specific rules are filled in
-- [ ] `/review-eml` runs successfully in Cursor on a test branch
-- [ ] Students know to run `/review-eml` and paste the summary into the PR before opening
+- [ ] `.kiro/REVIEW.md` exists and project-specific rules are filled in
+- [ ] `/eml-code-review` runs successfully in Kiro on a test branch
+- [ ] Students know to run `/eml-code-review` and paste the summary into the PR before opening
 - [ ] Reviewers know to check the **EML code review** section in PR descriptions
 
 ### Student workflow
 
 1. Finish feature on `feat/*` branch
-2. Run `/review-eml` in Cursor
+2. Run `/eml-code-review` in Kiro
 3. Fix Critical and High findings
 4. Open PR; paste review summary (or "EML review found no issues") under **EML code review**
 5. Wait for CI + human approval
@@ -115,7 +115,7 @@ EML uses the **`eml-code-review` Cursor skill** instead of Cursor Bugbot. Review
 ### Reviewer workflow
 
 - Confirm PR includes EML review output
-- Re-run `/review-eml` locally on complex PRs if needed
+- Re-run `/eml-code-review` locally on complex PRs if needed
 - See [reviewer-guide.md](./reviewer-guide.md)
 
 ---
@@ -138,9 +138,9 @@ EML uses the **`eml-code-review` Cursor skill** instead of Cursor Bugbot. Review
 |-----|------------|
 | Direct pushes to `feat/*` branches | Expected — students need to push feature branches. The gate is at merge to `main`. |
 | Unreviewed code sitting on a branch | Policy + Trello hygiene; branches should have open PRs when work is "In Review". |
-| Skipping `/review-eml` before PR | PR template checkbox; reviewer checks for review summary; lead spot-audits |
+| Skipping `/eml-code-review` before PR | PR template checkbox; reviewer checks for review summary; lead spot-audits |
 | Human review quality | Use [reviewer-guide.md](./reviewer-guide.md); train leads on AI-assisted PR scrutiny. |
-| False positives in AI review | Tune `.cursor/REVIEW.md` each semester; reviewer uses judgment |
+| False positives in AI review | Tune `.kiro/REVIEW.md` each semester; reviewer uses judgment |
 
 ---
 
@@ -153,7 +153,7 @@ After configuration, open a **docs-only test PR** (onboarding task):
 - [ ] Merge is blocked without an approving review
 - [ ] Merge is blocked when a required check fails
 - [ ] PR template renders (What / Why / How tested / EML code review / AI disclosure / Docs)
-- [ ] Author ran `/review-eml` and pasted summary (onboarding PR may note "N/A — docs only")
+- [ ] Author ran `/eml-code-review` and pasted summary (onboarding PR may note "N/A — docs only")
 - [ ] Branch is auto-deleted after merge (if enabled)
 
 Record the date and verifier name in `docs/handoff.md` under **Infrastructure** or **Known configuration**.
@@ -175,5 +175,5 @@ When creating a repo from the EML template:
 
 - [PLAN.md](../PLAN.md) — §3 Source control, §5 Code quality & review
 - [github-template-setup.md](./github-template-setup.md) — template repo publishing
-- [reviewer-guide.md](./reviewer-guide.md) — what humans check after CI and `/review-eml`
-- [REVIEW.md](../template/.cursor/REVIEW.md) — review rules (lives in each project repo)
+- [reviewer-guide.md](./reviewer-guide.md) — what humans check after CI and `/eml-code-review`
+- [REVIEW.md](../template/.kiro/REVIEW.md) — review rules (lives in each project repo)

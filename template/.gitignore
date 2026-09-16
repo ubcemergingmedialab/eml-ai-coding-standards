@@ -20,7 +20,7 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
-# IDE (commit .cursor/ — it is lab standard; ignore personal IDE state)
+# IDE (commit .kiro/ — it is lab standard; ignore personal IDE state)
 .idea/
 *.swp
 *.swo
@@ -29,7 +29,6 @@ Thumbs.db
 coverage/
 
 # Tool caches
-.codetree/
 .turbo/
 .vercel/
 
