@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "//": "MCP is OPTIONAL in Kiro. Kiro has built-in structured code search and AST-aware file reading, so the codetree/tree-sitter server used under Cursor is no longer required. Add servers below only when a project needs them (e.g. GitHub). Leave disabled until configured. To use in a project, copy this file to that repo's .kiro/settings/mcp.json.",
+    "github": {
+      "command": "uvx",
+      "args": ["mcp-server-github@latest"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
+      },
+      "disabled": true,
+      "autoApprove": []
+    }
+  }
+}

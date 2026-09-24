@@ -7,6 +7,8 @@
 
 ## Executive Summary
 
+Note: DECISION MADE. Kiro was chosen as the ai-assisted IDE
+
 The lab is evaluating alternatives to Cursor for AI-assisted development across web, Unity, and Unreal Engine projects. Key requirements include:
 
 - **User management** — Easy onboarding/offboarding for semester-based student rotation
